@@ -27,7 +27,7 @@ public class StockLedger implements StockLedgerInterface{
      */
     public void buy(String stockSymbol, int sharesBought, double pricePerShare) {
         boolean contains = false;
-        //did not use contains or getEntry cause we did need to.
+        //did not use contains or getEntry because we did need to.
         //this is O(N) operation, where as I am only going through the list once to find and
         //add the new purchase
         for(LedgerEntry le : this.stockList){
@@ -38,7 +38,7 @@ public class StockLedger implements StockLedgerInterface{
         }// end for loop
 
         //if this is a new entry
-        if(!contains){ //means we never found the stock symbol and need to creat a new entry
+        if(!contains){ //means we never found the stock symbol and need to create a new entry
             LedgerEntry newEntry = new LedgerEntry(stockSymbol, pricePerShare, sharesBought);
             stockList.add(newEntry); // new purchase,
         }// end if
@@ -84,10 +84,9 @@ public class StockLedger implements StockLedgerInterface{
      *
      * @param stockSymbol The stock's symbol.
      * @return LedgerEntry object of stock symbol.
-     * @throws NoSuchElementException - for no LederEntry with that symbol
+     * @throws NoSuchElementException - for no LedgerEntry with that symbol
      */
     public LedgerEntry getEntry(String stockSymbol){
-        LedgerEntry tempLedgerEntry;
             for (LedgerEntry le : this.stockList) {
                 if (le.getStockSymbol().equals(stockSymbol)) {
                     return le;
