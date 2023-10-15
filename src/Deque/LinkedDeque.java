@@ -123,13 +123,44 @@ public class LinkedDeque<T> implements DequeInterface<T>{
     */
    public Iterator<T> iterator() {
       return null;
-   }// end iteraator
+   }// end iterator
 
    public Iterator<T> getIterator() {
       return iterator();
    } //end getIterator
 
+   private class IteratorForLinkedList implements Iterator<T> {
+      private DLNode currentNode;
+      private boolean nextCalled;
 
+      /**
+       * will create the iterator object that can iterate through a linkedlist
+       * This iterator will either start from the front or the back and iterate
+       * through the linked list.
+       */
+      public IteratorForLinkedList(){
+         currentNode = LinkedDeque.this.backNode;
+      }// end constructor
+
+      /**
+       * This will get the next node in the list
+       * @return - the node object
+       */
+      public T next () {
+         DLNode tempNode = currentNode;
+         currentNode = tempNode.getNextNode();
+         return tempNode.getData();
+      }// end next
+
+      /**
+       * this will see if there is a next node data and return ture if a node is
+       * not null
+       * @return - boolean
+       */
+      public boolean hasNext () {
+         return currentNode.getNextNode() == null;
+      }// end hadNext
+   }// end IteratorForLinkedList
 
 
    /**
