@@ -12,8 +12,8 @@ public interface DequeInterface<T> extends Iterable<T>{
      * @return The object at the front or back of the deque.
      * @throws EmptyQueueException if the deque is empty before the operation.
      */
-    public T removeFront();
-    public T removeBack();
+    public T removeFront() throws EmptyQueueException;
+    public T removeBack() throws EmptyQueueException;
 
     /** Detects whether this deque is empty.
      * @return True if deque is empty, or false otherwise.
@@ -23,8 +23,8 @@ public interface DequeInterface<T> extends Iterable<T>{
     /** Returns the front or back entry's data.
      * @return Entry data for front of back node.
      */
-    public T getFront();
-    public T getBack();
+    public T getFront() throws EmptyQueueException;
+    public T getBack() throws EmptyQueueException;
 
     /* Removes all entries from this deque. */
     public void clear();
