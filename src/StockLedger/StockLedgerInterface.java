@@ -1,5 +1,7 @@
 package Deque.StockLedger;
 
+import Deque.Deque.EmptyQueueException;
+
 public interface StockLedgerInterface {
 
     /** Records a stock purchase in this ledger.
@@ -14,7 +16,7 @@ public interface StockLedgerInterface {
      @param sharesSold     The number of shares sold.
      @param pricePerShare  The price per share.
      @return  The capital gain (loss). */
-    public double sell(String stockSymbol, int sharesSold, double pricePerShare);
+    public double sell(String stockSymbol, int sharesSold, double pricePerShare) throws EmptyQueueException;
 
     /** Returns a boolean on whether the passed in stock symbol is contained in the ledger.
      @param stockSymbol    The stock's symbol.

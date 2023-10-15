@@ -6,7 +6,7 @@ package Deque.StockLedger;
 public class StockPurchase {
     private String stockSymbol;
     private double stockPrice;
-    private int numOfShares;
+    private int numOfShares; // for this program this should be 1 stock per purchase
 
     /**
      * The constructor of the stock purchase for use in a linked structure.

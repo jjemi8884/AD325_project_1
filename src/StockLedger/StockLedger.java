@@ -1,5 +1,7 @@
 package Deque.StockLedger;
 
+import Deque.Deque.EmptyQueueException;
+
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
@@ -24,21 +26,22 @@ public class StockLedger implements StockLedgerInterface{
      * @param pricePerShare The price per share.
      */
     public void buy(String stockSymbol, int sharesBought, double pricePerShare) {
-        boolean sentinal1 = false;
+        boolean contains = false;
+        //did not use contains or getEntry cause we did need to.
+        //this is O(N) operation, where as I am only going through the list once to find and
+        //add the new purchase
         for(LedgerEntry le : this.stockList){
             if(le.getStockSymbol().equals(stockSymbol)){
                 le.addPurchase(pricePerShare, sharesBought);
-                sentinal1 = true;
+                contains = true;
             }//end if
-
         }// end for loop
 
         //if this is a new entry
-        if(!sentinal1){ //means we never found the stock symbol and need to creat a new entry
+        if(!contains){ //means we never found the stock symbol and need to creat a new entry
             LedgerEntry newEntry = new LedgerEntry(stockSymbol, pricePerShare, sharesBought);
             stockList.add(newEntry); // new purchase,
         }// end if
-
     }// end buy
 
     /**
@@ -50,8 +53,15 @@ public class StockLedger implements StockLedgerInterface{
      * @param pricePerShare The price per share.
      * @return The capital gain (loss).
      */
-    public double sell(String stockSymbol, int sharesSold, double pricePerShare) {
-        return 0;
+    public double sell(String stockSymbol, int sharesSold, double pricePerShare) throws EmptyQueueException {
+        if(contains(stockSymbol)){
+            LedgerEntry temp = this.getEntry(stockSymbol);
+            double price = temp.sellStock(sharesSold);
+            return (sharesSold * pricePerShare) - price;
+
+        }else {
+            throw new IllegalArgumentException("You don't contain that stock");
+        }
     }
 
     /**
@@ -74,14 +84,17 @@ public class StockLedger implements StockLedgerInterface{
      *
      * @param stockSymbol The stock's symbol.
      * @return LedgerEntry object of stock symbol.
+     * @throws NoSuchElementException - for no LederEntry with that symbol
      */
     public LedgerEntry getEntry(String stockSymbol){
+        LedgerEntry tempLedgerEntry;
             for (LedgerEntry le : this.stockList) {
                 if (le.getStockSymbol().equals(stockSymbol)) {
                     return le;
-                } else {
-                    throw new NoSuchElementException();
-                }//end if
+                }
+                //end if
             }//end for loop
+        throw new NoSuchElementException(stockSymbol + " is not in ledger");
+
     }//end getEntry
 }//end class

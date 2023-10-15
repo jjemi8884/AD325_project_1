@@ -1,5 +1,6 @@
 package Deque.StockLedger;
 
+import Deque.Deque.EmptyQueueException;
 import Deque.Deque.LinkedDeque;
 
 public class LedgerEntry  {
@@ -39,9 +40,26 @@ public class LedgerEntry  {
      * //@return - the price of the purchase, just in case we want to track that or something
      */
     public void addPurchase(double price, int numOfStock){
-        StockPurchase sp = new StockPurchase(getStockSymbol(), price, numOfStock);
-        this.ledgerDisk.addToBack(sp);
+        for(int i = 0; i < numOfStock; i++) {
+            StockPurchase sp = new StockPurchase(getStockSymbol(), price, 1);
+            this.ledgerDisk.addToBack(sp);
+        }
     }
+
+    /**
+     *  Remove the inputs from the stock and sell, sell, sell
+     *  Since this is a deque, I will be taking from the front
+     */
+    public double sellStock(int numOfStock) throws EmptyQueueException {
+        double stockTotalBuyPrice = 0.00;
+        for(int i = 0; i < numOfStock; i++) {
+            if (!ledgerDisk.isEmpty()) {
+                StockPurchase sp = ledgerDisk.removeFront();
+                stockTotalBuyPrice += sp.getStockPrice();
+            }//end if
+        }// end for
+        return stockTotalBuyPrice;
+    }// end sellStock
 
     public void clear(){
         this.ledgerDisk = null;
