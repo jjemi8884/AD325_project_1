@@ -1,6 +1,7 @@
 package Deque.StockLedger;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class StockLedger implements StockLedgerInterface{
 
@@ -33,10 +34,10 @@ public class StockLedger implements StockLedgerInterface{
         }// end for loop
 
         //if this is a new entry
-        if(sentinal1){
+        if(!sentinal1){ //means we never found the stock symbol and need to creat a new entry
             LedgerEntry newEntry = new LedgerEntry(stockSymbol, pricePerShare, sharesBought);
             stockList.add(newEntry); // new purchase,
-            }// end if
+        }// end if
 
     }// end buy
 
@@ -60,8 +61,13 @@ public class StockLedger implements StockLedgerInterface{
      * @return Boolean of if the stock exists in the ledger.
      */
     public boolean contains(String stockSymbol) {
+        for (LedgerEntry le : this.stockList) {
+            if (le.getStockSymbol().equals(stockSymbol)) {
+                return true;
+            }//end if;
+        }//end for loop
         return false;
-    }
+    }//end contains
 
     /**
      * Returns a LedgerEntry object based on stock symbol.
@@ -69,7 +75,13 @@ public class StockLedger implements StockLedgerInterface{
      * @param stockSymbol The stock's symbol.
      * @return LedgerEntry object of stock symbol.
      */
-    public LedgerEntry getEntry(String stockSymbol) {
-        return null;
-    }
-}
+    public LedgerEntry getEntry(String stockSymbol){
+            for (LedgerEntry le : this.stockList) {
+                if (le.getStockSymbol().equals(stockSymbol)) {
+                    return le;
+                } else {
+                    throw new NoSuchElementException();
+                }//end if
+            }//end for loop
+    }//end getEntry
+}//end class
