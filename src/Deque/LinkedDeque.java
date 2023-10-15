@@ -107,14 +107,13 @@ public class LinkedDeque<T> implements DequeInterface<T>{
       return backNode.getData();
    }// end getBack
 
+   /**
+    * will clear the LinkedDeque
+    */
    public void clear() {
       frontNode = backNode = null; //let Java garbage collection handle this
+
    }//end clear
-
-
-
-
-
 
    /**
     * Creates iterators to iterate through deque.
@@ -129,38 +128,79 @@ public class LinkedDeque<T> implements DequeInterface<T>{
       return iterator();
    } //end getIterator
 
-   private class IteratorForLinkedList implements Iterator<T> {
+   private class IteratorForLinkedDeque implements Iterator<T> {
       private DLNode currentNode;
-      private boolean nextCalled;
+      private boolean bwk;
+
 
       /**
        * will create the iterator object that can iterate through a linkedlist
-       * This iterator will either start from the front or the back and iterate
+       * This iterator will either start from the front and iterate
        * through the linked list.
        */
-      public IteratorForLinkedList(){
-         currentNode = LinkedDeque.this.backNode;
+      public IteratorForLinkedDeque() {
+         currentNode = LinkedDeque.this.frontNode;
+         bwk = false;
       }// end constructor
 
+      /** **********************BONUS*****************************
+       * will set the construciton for iterating through the list backwards
+       * From back to front.
+       * But the string has to be right for that to happen
+       *
+       * @param direction - direction of travel throught linked list
+       */
+      public IteratorForLinkedDeque(String direction) {
+         if (direction.equals("backwards=true")) {
+            currentNode = LinkedDeque.this.backNode;
+            bwk = true;
+         } else {
+            currentNode = LinkedDeque.this.frontNode;
+            bwk = false;
+         }
+      }
+
       /**
-       * This will get the next node in the list
+       * This will get the next node in the list and return its data
+       *
        * @return - the node object
        */
-      public T next () {
-         DLNode tempNode = currentNode;
-         currentNode = tempNode.getNextNode();
-         return tempNode.getData();
+      public T next() {
+         T result;
+
+         if (hasNext()) {
+            //no need to throw exception, the method getData will do it for me :)
+            result = currentNode.getData(); // get the data to return to the customer
+            if (!bwk) {
+               if (currentNode.getPreviousNode() != null) {
+                  currentNode = currentNode.getPreviousNode(); //there is another link in the list.
+               } else {
+                  currentNode = null;
+               }// end if
+            } else { // move back to front
+               if (currentNode.getNextNode() != null) {
+                  currentNode = currentNode.getNextNode();
+               } else {
+                  currentNode = null;
+               }//end if
+            }//end if
+         } else {
+            result = null;// end hasNext if
+         }
+         return result;
       }// end next
 
       /**
        * this will see if there is a next node data and return ture if a node is
        * not null
+       *
        * @return - boolean
        */
-      public boolean hasNext () {
-         return currentNode.getNextNode() == null;
+      public boolean hasNext() {
+         return currentNode != null;
       }// end hadNext
-   }// end IteratorForLinkedList
+   }
+
 
 
    /**
