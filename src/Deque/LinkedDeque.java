@@ -24,11 +24,16 @@ public class LinkedDeque<T> implements DequeInterface<T>{
     * @param newEntry An object to be added.
     */
    public void addToFront(T newEntry) {
-      DLNode newNode = new DLNode(newEntry);
-      DLNode temp = frontNode;
-      frontNode = newNode;
-      frontNode.setPreviousNode(temp);
-      temp.setNextNode(frontNode);
+      if(frontNode == null){
+         frontNode = new DLNode(newEntry);
+         backNode = frontNode;
+      }else {
+         DLNode newNode = new DLNode(newEntry);
+         DLNode temp = frontNode;
+         frontNode = newNode;
+         frontNode.setPreviousNode(temp);
+         temp.setNextNode(frontNode);
+      }//end if
    }// end addToFront
 
    /**
@@ -36,11 +41,16 @@ public class LinkedDeque<T> implements DequeInterface<T>{
     * @param newEntry An object to be added.
     */
    public void addToBack(T newEntry) {
+      if(backNode == null){ //first entry
+         backNode = new DLNode(newEntry);
+         frontNode = backNode;
+         System.out.println(newEntry);
+      }else{
       DLNode newNode = new DLNode(newEntry);
       DLNode temp = backNode;
       backNode = newNode;
       backNode.setNextNode(temp);
-      temp.setNextNode(backNode);
+      temp.setPreviousNode(backNode);}
    }//end addToBack
 
    /**
@@ -52,11 +62,17 @@ public class LinkedDeque<T> implements DequeInterface<T>{
    public T removeFront() throws EmptyQueueException {
       if (isEmpty()){
          throw new EmptyQueueException();
-      }
-      DLNode temp = frontNode;
-      frontNode = temp.getPreviousNode();
-      frontNode.setNextNode(null);
-      return temp.data;
+      }else if(frontNode == backNode){
+        T data = frontNode.getData();
+        frontNode = backNode = null; //return to a empty list
+         System.out.println("I was here :)");
+         return data;
+      }else{
+         DLNode temp = frontNode;
+         frontNode = temp.getPreviousNode();
+         frontNode.setNextNode(null);
+         return temp.data;
+      }//end if
    }//end RemoveFront
 
    /**
