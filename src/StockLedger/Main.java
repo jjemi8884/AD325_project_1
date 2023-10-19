@@ -10,6 +10,7 @@ public class Main {
         ledger.buy("hp", 100, 25.00);
         ledger.buy("AARP", 30, 45.00);
         ledger.buy("AARP", 40, 35.00);
+
         System.out.println(ledger);
 
     }
