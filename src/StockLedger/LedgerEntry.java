@@ -3,6 +3,10 @@ package Deque.StockLedger;
 import Deque.Deque.EmptyQueueException;
 import Deque.Deque.LinkedDeque;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
+
 public class LedgerEntry  {
     private LinkedDeque<StockPurchase> ledgerDisk;
     private String stockSymbol;
@@ -26,9 +30,8 @@ public class LedgerEntry  {
      */
     public LedgerEntry(String symbol, Double price, int numOfStock){
         setStockSymbol(symbol);
-        StockPurchase sp = new StockPurchase(getStockSymbol(), price, numOfStock);
         this.ledgerDisk = new LinkedDeque<StockPurchase>();
-        this.ledgerDisk.addToBack(sp);
+        this.addPurchase(price, numOfStock);
     }
 
 
@@ -73,9 +76,36 @@ public class LedgerEntry  {
         return this.stockSymbol;
     }
 
+    public String toString(){
+        String answer = "";
+        Iterator<StockPurchase> itr = ledgerDisk.getIterator();
+        TreeMap<Double, Integer> stockMap= new TreeMap<>();
+        while(itr.hasNext()){
+
+            StockPurchase stock = itr.next();
+            double price = stock.getStockPrice();
+            if (stockMap.containsKey(price)){
+                //use a dict to count how many of each stock at what price we have
+                int count = stockMap.get(price);
+                count++;
+                stockMap.put(price, count);
+            }else{
+                // in case this is the first instance of the price
+                stockMap.put(price, 1);
+            }//end if
+
+            //print the results
+        }//end while
+        answer = "";
+        for(Map.Entry<Double, Integer> itr2 : stockMap.entrySet()){
+            answer = answer + itr2.getKey() + " (" + itr2.getValue() + "), ";
+        }//end foreach
+
+        return answer.substring(0, answer.length()-2);
+    }//end toString
 
 
 
 
 
-}
+}// end class

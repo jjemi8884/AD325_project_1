@@ -40,7 +40,7 @@ public class StockLedger implements StockLedgerInterface{
         //if this is a new entry
         if(!contains){ //means we never found the stock symbol and need to create a new entry
             LedgerEntry newEntry = new LedgerEntry(stockSymbol, pricePerShare, sharesBought);
-            stockList.add(newEntry); // new purchase,
+            stockList.add(newEntry);// new purchase,
         }// end if
     }// end buy
 
@@ -96,4 +96,20 @@ public class StockLedger implements StockLedgerInterface{
         throw new NoSuchElementException(stockSymbol + " is not in ledger");
 
     }//end getEntry
+
+    public String toString(){
+        return printLedger();
+    }
+
+    public String printLedger(){
+
+        String answer = "----Stock Ledger----\n";
+        for(LedgerEntry sp : stockList){
+            answer = answer + sp.getStockSymbol() + " " +  sp.toString() + "\n";
+        }
+
+
+
+        return answer;
+    }
 }//end class
