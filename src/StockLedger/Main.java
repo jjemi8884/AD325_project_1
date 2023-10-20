@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) throws EmptyQueueException {
         StockLedger ledger = new StockLedger();
         ledger.buy("AAPL", 20, 45.00);
-        ledger.buy("AAPL", 50, 75.00);
+        ledger.buy("AAPL", 20, 75.00);
         ledger.buy("MSFT",20, 95.00);
         System.out.println(ledger);
         ledger.sell("AAPL", 30, 65.00);
@@ -27,10 +27,10 @@ public class Main {
         ledger.sell("MSFT", 4, 30.00);
         System.out.println(ledger);
         ledger.sell("MSFT", 2, 30.00);
-        System.out.println(ledger);
-        //--- extra test that different things
-        ledger.sell("TSLA", 49, 30.00); // remove TSLA to one share
-        System.out.println(ledger); // make sure it prints out one share
-
+        System.out.println(ledger); // if you don't get the correct output try, try again. It uses a map to get price per share
+        //--- extra test that different things undo the //
+        ledger.sell("TSLA", 49, 30.00); // remove TSLA to one share to test the "stock" instead of "stocks"
+        System.out.println(ledger); //
+        System.out.println(ledger.printGains());//to test, sure looks like TSLA is a big loser :) AAPL for the win.
     }
 }

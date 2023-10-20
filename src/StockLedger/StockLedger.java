@@ -107,11 +107,24 @@ public class StockLedger implements StockLedgerInterface{
 
         String answer = "----Stock Ledger----\n";
         for(LedgerEntry sp : stockList){
-            answer = answer + sp.getStockSymbol() + " " +  sp.toString() + "\n";
+            if (!sp.isEmpty()) { //don't print the ledger if there is no stock :)
+                answer = answer + sp.getStockSymbol() + " " + sp.toString() + "\n";
+            }
         }
-
-
-
         return answer;
     }
+
+    /**
+     * will return how much the stockLedger has made over the course of sells, could be negative is
+     * stock was sold below the pruchase cost.
+     * @return - String - total gains of the stock
+     */
+    public String printGains(){
+        String answer = "";
+        answer = "Stock symbol total gains\n";
+        for(LedgerEntry le : stockList){
+            answer = answer + le.getStockSymbol() + "  |  " + le.getGains() + " dollars\n";
+        }//end for
+        return answer;
+    }//end printGains
 }//end class
