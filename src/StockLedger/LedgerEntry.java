@@ -11,7 +11,7 @@ public class LedgerEntry  {
     private LinkedDeque<StockPurchase> ledgerDisk;
     private String stockSymbol;
     private double gains;
-    private double loss;
+
 
     /**
      * construction with only the symbol supplied and no shares bought
@@ -57,20 +57,18 @@ public class LedgerEntry  {
      *  stock ledger and update the gains/loss variables for each stock.
      * @return double - the loss or gain of the stock purchase.
      */
-    public double sellStock(int numOfStock) throws EmptyQueueException {
-        double stockGain = 0.00;
+
+    public double sellStock(int numOfStock, double price) throws EmptyQueueException {
+        double total = 0.0;
         for(int i = 0; i < numOfStock; i++) {
             if (!ledgerDisk.isEmpty()) {
                 StockPurchase sp = ledgerDisk.removeFront();
-                stockGain += sp.getStockPrice();
+                total += price - sp.getStockPrice();
             }//end if
         }// end for
-        if (0>= stockGain){
-            this.loss += stockGain;
-        }else{
-            this.gains += stockGain;
-        }
-        return stockGain;
+        this.addToGains(total);
+        return total;
+
     }// end sellStock
 
     /**
@@ -106,7 +104,7 @@ public class LedgerEntry  {
      * @return -string in format of  [stock price] ([number of stocks]), ...
      */
     public String toString(){
-        String answer = "";
+        String answer;
         Iterator<StockPurchase> itr = ledgerDisk.getIterator();
         TreeMap<Double, Integer> stockMap= new TreeMap<>();
         while(itr.hasNext()){
@@ -126,15 +124,42 @@ public class LedgerEntry  {
             //print the results
         }//end while
         answer = "";
+        String s = "shares";
         for(Map.Entry<Double, Integer> itr2 : stockMap.entrySet()){
-            answer = answer + itr2.getKey() + " (" + itr2.getValue() + "), ";
+            if(itr2.getValue() == 1){
+                s = " share";
+            }
+            answer = answer + itr2.getKey() + " (" + itr2.getValue() + s + "), ";
         }//end foreach
-
-        return answer.substring(0, answer.length()-2); //return substing to remove the ", " from the end.
+        if(answer == ""){
+            return answer;
+        }else {
+            return answer.substring(0, answer.length() - 2); //return substing to remove the ", " from the end.
+        }
     }//end toString
 
+    /**
+     * will tell you if the ledger entry is empty and only has the symbol
+     *
+     */
+    public boolean isEmpty(){
+        return this.ledgerDisk.isEmpty();
+    }
 
+    /**
+     * will return the to total gains of the symbol
+     * @return double the gains (may be negative) of the ledger entry
+     */
+    public double getGains(){
+        return this.gains;
+    }// end getCost
 
-
+    /**
+     * will add to the gains (could subtract too) of the ledger
+     * @param cost - double, what you want to add to the ledger gains.
+     */
+    private void addToGains(double cost){
+        this.gains = this.gains + cost;
+    }// end addToGains
 
 }// end class

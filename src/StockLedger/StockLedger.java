@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 public class StockLedger implements StockLedgerInterface{
 
     ArrayList<LedgerEntry> stockList;
+    Double monies;
 
     /**
      * the constructor will only create the arraylist for items to be added.
@@ -16,6 +17,7 @@ public class StockLedger implements StockLedgerInterface{
      */
      public StockLedger(){
        stockList = new ArrayList<LedgerEntry>();
+       monies = 0.0;
      }//end constructor
 
     /**
@@ -56,12 +58,12 @@ public class StockLedger implements StockLedgerInterface{
     public double sell(String stockSymbol, int sharesSold, double pricePerShare) throws EmptyQueueException {
         if(contains(stockSymbol)){
             LedgerEntry temp = this.getEntry(stockSymbol);
-            double price = temp.sellStock(sharesSold);
-            return (sharesSold * pricePerShare) - price;
+            monies += temp.sellStock(sharesSold, pricePerShare);
 
         }else {
             throw new IllegalArgumentException("You don't contain that stock");
         }
+        return monies;
     }
 
     /**
@@ -105,11 +107,24 @@ public class StockLedger implements StockLedgerInterface{
 
         String answer = "----Stock Ledger----\n";
         for(LedgerEntry sp : stockList){
-            answer = answer + sp.getStockSymbol() + " " +  sp.toString() + "\n";
+            if (!sp.isEmpty()) { //don't print the ledger if there is no stock :)
+                answer = answer + sp.getStockSymbol() + " " + sp.toString() + "\n";
+            }
         }
-
-
-
         return answer;
     }
+
+    /**
+     * will return how much the stockLedger has made over the course of sells, could be negative is
+     * stock was sold below the pruchase cost.
+     * @return - String - total gains of the stock
+     */
+    public String printGains(){
+        String answer = "";
+        answer = "Stock symbol total gains\n";
+        for(LedgerEntry le : stockList){
+            answer = answer + le.getStockSymbol() + "  |  " + le.getGains() + " dollars\n";
+        }//end for
+        return answer;
+    }//end printGains
 }//end class
