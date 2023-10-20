@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 public class StockLedger implements StockLedgerInterface{
 
     ArrayList<LedgerEntry> stockList;
+    Double monies;
 
     /**
      * the constructor will only create the arraylist for items to be added.
@@ -16,6 +17,7 @@ public class StockLedger implements StockLedgerInterface{
      */
      public StockLedger(){
        stockList = new ArrayList<LedgerEntry>();
+       monies = 0.0;
      }//end constructor
 
     /**
@@ -56,12 +58,12 @@ public class StockLedger implements StockLedgerInterface{
     public double sell(String stockSymbol, int sharesSold, double pricePerShare) throws EmptyQueueException {
         if(contains(stockSymbol)){
             LedgerEntry temp = this.getEntry(stockSymbol);
-            double price = temp.sellStock(sharesSold);
-            return (sharesSold * pricePerShare) - price;
+            monies += temp.sellStock(sharesSold, pricePerShare);
 
         }else {
             throw new IllegalArgumentException("You don't contain that stock");
         }
+        return monies;
     }
 
     /**

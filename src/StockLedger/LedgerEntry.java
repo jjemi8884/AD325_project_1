@@ -52,16 +52,18 @@ public class LedgerEntry  {
     /**
      *  Remove the inputs from the stock and sell, sell, sell
      *  Since this is a deque, I will be taking from the front
+     * @param - int number of stocks sold
+     * @param - price stock where sold
+     * @return the monies made
      */
-    public double sellStock(int numOfStock) throws EmptyQueueException {
-        double stockTotalBuyPrice = 0.00;
+    public double sellStock(int numOfStock, double sellPrice) throws EmptyQueueException {
+        double moniesMade = 0.00;
         for(int i = 0; i < numOfStock; i++) {
-            if (!ledgerDisk.isEmpty()) {
-                StockPurchase sp = ledgerDisk.removeFront();
-                stockTotalBuyPrice += sp.getStockPrice();
-            }//end if
+            StockPurchase sp = ledgerDisk.removeFront();
+            double boughtPrice = sp.getStockPrice();
+            moniesMade += sellPrice - boughtPrice;
         }// end for
-        return stockTotalBuyPrice;
+        return moniesMade;
     }// end sellStock
 
     public void clear(){
@@ -98,7 +100,11 @@ public class LedgerEntry  {
         }//end while
         answer = "";
         for(Map.Entry<Double, Integer> itr2 : stockMap.entrySet()){
-            answer = answer + itr2.getKey() + " (" + itr2.getValue() + "), ";
+            String s = " shares";
+            if(itr2.getValue() == 1){
+                s = " share"; //just in case we only have one share left, it's not plural
+            }
+            answer = answer + itr2.getKey() + " (" + itr2.getValue() + s + "), ";
         }//end foreach
 
         return answer.substring(0, answer.length()-2);
