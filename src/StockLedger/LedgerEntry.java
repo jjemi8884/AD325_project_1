@@ -57,6 +57,7 @@ public class LedgerEntry  {
      *  stock ledger and update the gains/loss variables for each stock.
      * @return double - the loss or gain of the stock purchase.
      */
+
     public double sellStock(int numOfStock, double price) throws EmptyQueueException {
         double total = 0.0;
         for(int i = 0; i < numOfStock; i++) {
