@@ -3,6 +3,7 @@ package Deque.StockLedger;
 import Deque.Deque.EmptyQueueException;
 
 public class Main {
+    //O(1) + O(n) == O(n)
     public static void main(String[] args) throws EmptyQueueException {
         StockLedger ledger = new StockLedger();
         ledger.buy("AAPL", 20, 45.00);
@@ -32,6 +33,8 @@ public class Main {
         ledger.sell("TSLA", 49, 30.00); // remove TSLA to one share to test the "stock" instead of "stocks"
         System.out.println(ledger); //
         System.out.println(ledger.printGains());//to test, sure looks like TSLA is a big loser :) AAPL for the win.
+        ledger.clear();
+        System.out.println(ledger);
         //see if worked
     }
 }

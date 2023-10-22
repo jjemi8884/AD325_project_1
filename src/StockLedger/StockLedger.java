@@ -14,15 +14,17 @@ public class StockLedger implements StockLedgerInterface{
      * the constructor will only create the arraylist for items to be added.
      * no input or outputs.
      * using the standard ArrayList length for  initial array length.
+     * O(1) no loops in constructor
      */
      public StockLedger(){
-       stockList = new ArrayList<LedgerEntry>();
+       stockList = new ArrayList<>();
        monies = 0.0;
      }//end constructor
 
     /**
      * Records a stock purchase in this ledger.
-     *
+     * O(n) this has a loop that looks for the stock symbol which means the
+     * symbol could be at the end of the stocklist or not in the list, hence O(n) for worst case
      * @param stockSymbol   The stock's symbol.
      * @param sharesBought  The number of shares purchased.
      * @param pricePerShare The price per share.
@@ -30,7 +32,7 @@ public class StockLedger implements StockLedgerInterface{
     public void buy(String stockSymbol, int sharesBought, double pricePerShare) {
         boolean contains = false;
         //did not use contains or getEntry because we did need to.
-        //this is O(N) operation, where as I am only going through the list once to find and
+        //this is O(n) operation, where as I am only going through the list once to find and
         //add the new purchase
         for(LedgerEntry le : this.stockList){
             if(le.getStockSymbol().equals(stockSymbol)){
@@ -49,7 +51,7 @@ public class StockLedger implements StockLedgerInterface{
     /**
      * Removes from this ledger any shares of a particular stock
      * that were sold and computes the capital gain or loss.
-     *
+     *  O(n) since this calls the "contains" method it wil be O(n)
      * @param stockSymbol   The stock's symbol.
      * @param sharesSold    The number of shares sold.
      * @param pricePerShare The price per share.
@@ -68,7 +70,7 @@ public class StockLedger implements StockLedgerInterface{
 
     /**
      * Returns a boolean on whether the passed in stock symbol is contained in the ledger.
-     *
+     * O(n) will iterate once through the list looking for the symbol
      * @param stockSymbol The stock's symbol.
      * @return Boolean of if the stock exists in the ledger.
      */
@@ -83,7 +85,7 @@ public class StockLedger implements StockLedgerInterface{
 
     /**
      * Returns a LedgerEntry object based on stock symbol.
-     *
+     * O(n)
      * @param stockSymbol The stock's symbol.
      * @return LedgerEntry object of stock symbol.
      * @throws NoSuchElementException - for no LedgerEntry with that symbol
@@ -99,12 +101,23 @@ public class StockLedger implements StockLedgerInterface{
 
     }//end getEntry
 
+    /**
+     * this is the override for the toStirng in the main object
+     * O(n) since the call sp.toString is O(n) and is nested in the
+     * foreach loop of the stockList. worst case is O(2n),
+     * @return String - in a stock ledger format
+     */
     public String toString(){
         return printLedger();
     }
 
+    /**
+     * return the correct ledger output in a string format to print.
+     * O(n), It would be O(n^2) due to nested loops but only iterates through each stock purchase only once to map
+     * them to the correct price
+     * @return - String in correct format
+     */
     public String printLedger(){
-
         String answer = "----Stock Ledger----\n";
         for(LedgerEntry sp : stockList){
             if (!sp.isEmpty()) { //don't print the ledger if there is no stock :)
@@ -116,15 +129,34 @@ public class StockLedger implements StockLedgerInterface{
 
     /**
      * will return how much the stockLedger has made over the course of sells, could be negative is
-     * stock was sold below the pruchase cost.
+     * stock was sold below the purchase cost.
+     * O(2n) ---> O(n) again have nested loops that iterate through the ledger array and then each stock purchase.
+     * O(n)for iterating through all stock purchases only once.
      * @return - String - total gains of the stock
      */
     public String printGains(){
-        String answer = "";
-        answer = "Stock symbol total gains\n";
+        String answer = "Stock symbol total gains\n";
         for(LedgerEntry le : stockList){
             answer = answer + le.getStockSymbol() + "  |  " + le.getGains() + " dollars\n";
         }//end for
         return answer;
     }//end printGains
+
+    /**
+     * clear the ledger, and run for the hills
+     * O(n) for worst case, but would be very unlikely since we are not iterating through the stock purchases,
+     * only the ledgers
+     */
+    public void clear(){
+        stockList.clear(); // used the arraylist clear to remove all entries and stock purhcases
+        this.monies = 0.0;
+    }
+
+    /**
+     * return the size of the ledger, or how many symbols we have worked with.
+     * @return int size of the internal array that holds stock symobls
+     */
+    public int size(){
+        return stockList.size();
+    }
 }//end class

@@ -10,6 +10,7 @@ public class StockPurchase {
 
     /**
      * The constructor of the stock purchase for use in a linked structure.
+     * O(1) no loops in constructor
      * @param symbol - in String format
      * @param price - in double type
      * @param numOfShares - in int type
@@ -22,6 +23,7 @@ public class StockPurchase {
 
     /**
      * set the number of shares in a purchase
+     * O(1) again no loops in the constructor
      * @param numOfShares - is the number of shares bought
      */
     public void setNumShares(int numOfShares){
@@ -30,6 +32,7 @@ public class StockPurchase {
 
     /**
      * returns the number of shares that were bought
+     * O(1) no loops
      * @return - get number shares as an integer
      */
     public int getNumShares(){
@@ -38,6 +41,7 @@ public class StockPurchase {
 
     /**
      * sets the stock price
+     * O(1) no loops
      * @param price - required to be in double format
      */
     public void setStockPrice(double price){
@@ -46,6 +50,7 @@ public class StockPurchase {
 
     /**
      * returns the stock price of the purchase
+     * O(1) again, no loops
      * @return - in a double variable
      */
     public double getStockPrice(){
@@ -54,6 +59,7 @@ public class StockPurchase {
 
     /**
      * sets the stock symbol of the purchase
+     * O(1) no loops just straight commands
      * @param symbol - required to be in string type
      */
     public void setStockSymbol(String symbol){
@@ -62,6 +68,7 @@ public class StockPurchase {
 
     /**
      * returns the stock symbol
+     * O(1) no loops
      * @return - as a string object
      */
     public String getStockSymbol(){
@@ -71,6 +78,7 @@ public class StockPurchase {
     /**
      * returns the total cost of this stock as a double by multiplying the cost of each
      * stock option * the number of options.
+     * O(1) no loops
      * @return - num of shares * cost of shares
      */
     public double getTotalCost(){
