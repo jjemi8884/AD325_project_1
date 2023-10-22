@@ -30,11 +30,11 @@ public class Main {
         ledger.sell("MSFT", 2, 30.00);
         System.out.println(ledger);
         //--- extra test that different things undo the //
-        ledger.sell("TSLA", 49, 30.00); // remove TSLA to one share to test the "stock" instead of "stocks"
-        System.out.println(ledger); //
-        System.out.println(ledger.printGains());//to test, sure looks like TSLA is a big loser :) AAPL for the win.
-        ledger.clear();
-        System.out.println(ledger);
+//        ledger.sell("TSLA", 49, 30.00); // remove TSLA to one share to test the "stock" instead of "stocks"
+//        System.out.println(ledger); //
+//        System.out.println(ledger.printGains());//to test, sure looks like TSLA is a big loser :) AAPL for the win.
+//        ledger.clear(); // test the clearing of the ledger
+//        System.out.println(ledger); // make sure it does not print anything
         //see if worked
     }
 }
