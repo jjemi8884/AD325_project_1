@@ -83,7 +83,7 @@ public class LedgerEntry  {
      * should only be called during the constructor cause
      * changing the stock symbol
      * could mess up other parts of the program.
-     * @param symbol-
+     * @param symbol- what symbol to set
      */
     private void setStockSymbol(String symbol){
         this.stockSymbol = symbol;
@@ -99,8 +99,8 @@ public class LedgerEntry  {
     }
 
     /**
-     * return a stancard string that will show stock prics and number of shares.
-     * @override - toStirng in parent object
+     * return a standard string that will show stock prices and number of shares.
+     * @override - toString in parent object
      * @return -string in format of  [stock price] ([number of stocks]), ...
      */
     public String toString(){
@@ -148,7 +148,7 @@ public class LedgerEntry  {
 
     /**
      * will return the to total gains of the symbol
-     * @return double the gains (may be negative) of the ledger entry
+     * @return double the gains (maybe negative) of the ledger entry
      */
     public double getGains(){
         return this.gains;

@@ -5,17 +5,24 @@ import java.util.Iterator;
 public class LinkedDeque<T> implements DequeInterface<T>{
    private DLNode frontNode;
    private DLNode backNode;
+   private int size;
 
    /**
     * constructor with nothing supplied, just creates the deque
     */
    public LinkedDeque(){
       this.frontNode = this.backNode = null; //there are no nodes in the list
+      this.size = 0;
    }// end constructor #1
 
+   /**
+    * constructor with data supplied
+    * @param data - <T>
+    */
    public LinkedDeque(T data){
       this.frontNode = new DLNode(data); //added a single node via a constructor
       this.backNode = this.frontNode; //point both front and back to each other, only node in list.
+      this.size = 1;
    }// end constructor #2
 
    /**
@@ -36,6 +43,7 @@ public class LinkedDeque<T> implements DequeInterface<T>{
          frontNode.setPreviousNode(temp);
          temp.setNextNode(frontNode);
       }//end if
+      this.size++;
    }// end addToFront
 
    /**
@@ -53,7 +61,9 @@ public class LinkedDeque<T> implements DequeInterface<T>{
       DLNode temp = backNode;
       backNode = newNode;
       backNode.setNextNode(temp);
-      temp.setPreviousNode(backNode);}
+      temp.setPreviousNode(backNode);
+      }//end if
+      this.size++;
    }//end addToBack
 
    /**
@@ -63,9 +73,10 @@ public class LinkedDeque<T> implements DequeInterface<T>{
     * @throws EmptyQueueException if the deque is empty before the operation.
     */
    public T removeFront() throws EmptyQueueException {
+      this.size--;
       if (isEmpty()){
          throw new EmptyQueueException();
-      }else if(frontNode == backNode){
+      }else if(frontNode == backNode){// if there is only one node
          T data = frontNode.getData();
          frontNode = backNode = null; //return to an empty list
          return data;
@@ -82,9 +93,10 @@ public class LinkedDeque<T> implements DequeInterface<T>{
     * @return - back object data
     */
    public T removeBack() throws EmptyQueueException {
+      this.size--;
       if (isEmpty()){
          throw new EmptyQueueException();
-      }else if(frontNode == backNode){
+      }else if(frontNode == backNode){ // if there is only one node
          T data = backNode.getData();
          frontNode = backNode = null; //return to an empty list
          return data;
@@ -110,6 +122,7 @@ public class LinkedDeque<T> implements DequeInterface<T>{
     * Treating this like Peek and does not remove the data from the linked list
     *
     * @return Entry data for front of back node.
+    * @throws- EmptyQueueException if the Queue is empty
     */
    public T getFront() throws EmptyQueueException {
       if (isEmpty()){
@@ -122,6 +135,7 @@ public class LinkedDeque<T> implements DequeInterface<T>{
     * Returns the back entry's data
     * Treading this again like a peek, were the object is not remove from the list
     * @return -T object
+    * @throws -EmptyQueueException if the Queue is empty
     */
    public T getBack() throws EmptyQueueException {
       if (isEmpty()) {
@@ -131,12 +145,20 @@ public class LinkedDeque<T> implements DequeInterface<T>{
    }// end getBack
 
    /**
-    * will clear the LinkedDeque
+    * will clear the LinkedDeque and set the front and back node to null
     */
    public void clear() {
+      this.size = 0;
       frontNode = backNode = null; //let Java garbage collection handle this
-
    }//end clear
+
+   /**
+    * return the size of the linked node
+    * @return int - size
+    */
+   public int getSize(){
+      return this.size;
+   }//end getSize
 
    /**
     * Creates iterators to iterate through deque.
@@ -147,26 +169,32 @@ public class LinkedDeque<T> implements DequeInterface<T>{
       return new IteratorForLinkedDeque();
    }// end iterator
 
+   /**
+    * the calling method for the iterator
+    * @return- iterator object that can be use to iterate through the deque from front to back
+    */
    public Iterator<T> getIterator() {
       return iterator();
    } //end getIterator
 
+   /**
+    * this class will create the iterator object for the Deque
+    * it only travels from front of the deque to the back of the deque
+    */
    private class IteratorForLinkedDeque implements Iterator<T> {
       private DLNode currentNode;
 
       /**
        * will create the iterator object that can iterate through a linkedlist
-       * This iterator will either start from the front and iterate
+       * This iterator will start from the front and iterate
        * through the linked list.
        */
       public IteratorForLinkedDeque() {
          currentNode = frontNode;
-
       }// end constructor
 
       /**
        * This will get the next node in the list and return its data
-       *
        * @return - the node object
        */
       public T next() {
@@ -175,7 +203,7 @@ public class LinkedDeque<T> implements DequeInterface<T>{
          if (hasNext()) {
             //no need to throw exception, the method getData will do it for me :)
             result = currentNode.getData(); // get the data to return to the current node
-            currentNode = currentNode.getPreviousNode();
+            currentNode = currentNode.getPreviousNode(); // set new node to the next node in the list
 
          }else {
             return null;
@@ -187,13 +215,12 @@ public class LinkedDeque<T> implements DequeInterface<T>{
       /**
        * this will see if there is a next node data and return ture if a node is
        * not null
-       *
        * @return - boolean
        */
       public boolean hasNext() {
          return currentNode != null;
       }// end hadNext
-   }
+   }// end IteratorForLinkedDeque
 
 
 
@@ -213,7 +240,7 @@ public class LinkedDeque<T> implements DequeInterface<T>{
        */
       public DLNode(){
          new DLNode(null, null, null);
-      }
+      }//end constructor #1
 
       /**
        * constructor that will set the data of a node
@@ -222,7 +249,7 @@ public class LinkedDeque<T> implements DequeInterface<T>{
        */
       public DLNode(T data){
          new DLNode(data, null, null);
-      }
+      }// end constructor #2
 
       /**
        * the main constructor that all other will call
@@ -234,7 +261,7 @@ public class LinkedDeque<T> implements DequeInterface<T>{
          this.setData(data);
          this.setNextNode(next);
          this.setPreviousNode(previous);
-      }
+      }// end constructor #3
 
       /**
        * insert the date in to the node
@@ -254,7 +281,8 @@ public class LinkedDeque<T> implements DequeInterface<T>{
 
       /**
        * will set the next node variable that this node links to
-       * @param node - set the next DLNod that is linked
+       * (towards the front of the deque)
+       * @param node - set the next DLNode that is linked
        */
       public void setNextNode(DLNode node){
          nextNode = node;
@@ -269,8 +297,8 @@ public class LinkedDeque<T> implements DequeInterface<T>{
       }// end getNextNode
 
       /**
-       * access to previous node to change the referenece
-       * @param node you want to set
+       * access to previous node to change the reference
+       * @param node you want to set to the previous not (towards the back)
        */
       public void setPreviousNode(DLNode node){
          this.previousNode = node;
@@ -278,7 +306,7 @@ public class LinkedDeque<T> implements DequeInterface<T>{
 
       /**
        * access to previous node
-       * @return - return the DLNod object assigned to previous
+       * @return - return the DLNode object assigned to previous node
        */
       public DLNode getPreviousNode(){
          return this.previousNode;
@@ -287,4 +315,4 @@ public class LinkedDeque<T> implements DequeInterface<T>{
    }// end class DLNode
 
 
-}
+}//end Linked Deque
