@@ -178,29 +178,12 @@ public class LinkedDeque<T> implements DequeInterface<T>{
    } //end getIterator
 
    /**
-    * ***************BONUS****************
-    * This is the call for the reverse iterator
-    */
-   public Iterator<T> iteratorR(){
-      return new rIteratorForLinkedDeque();
-   }//end iteratorR
-
-   /**
-    * ****************BONUS****************
-    * This is the call the reverse iterator that will go through the
-    * LinkedDeque from the back to the front
-    *
-    */
-   public Iterator<T> getIteratorR(){
-      return iteratorR();
-   }//end getIteratorR
-
-   /**
     * this class will create the iterator object for the Deque
     * it only travels from front of the deque to the back of the deque
     */
    private class IteratorForLinkedDeque implements Iterator<T> {
       private DLNode currentNode;
+      private DLNode currentNodeBack;
 
       /**
        * will create the iterator object that can iterate through a linkedlist
@@ -209,24 +192,24 @@ public class LinkedDeque<T> implements DequeInterface<T>{
        */
       public IteratorForLinkedDeque() {
          currentNode = frontNode;
+         currentNodeBack = backNode;
       }// end constructor
 
       /**
        * This will get the next node in the list and return its data
+       * if this is the first call then the Backnode will be set to the current node
+       * If there is only
        * @return - the node object
        */
       public T next() {
-         T result;
+         T result = null;
+         result = currentNode.getData(); // get the data to return to the current node and if its null will throw exception
 
-         if (hasNext()) {
+         if (hasNext()) { //current node is not null
             //no need to throw exception, the method getData will do it for me :)
-            result = currentNode.getData(); // get the data to return to the current node
-            currentNode = currentNode.getPreviousNode(); // set new node to the next node in the list
-
-         }else {
-            return null;
-         }// end hasNext if
-
+            backNode = currentNode;
+            currentNode = currentNode.getPreviousNode(); // set new node to the next node in the list or null if the end
+         } //end if
          return result;
       }// end next
 
@@ -238,52 +221,38 @@ public class LinkedDeque<T> implements DequeInterface<T>{
       public boolean hasNext() {
          return currentNode != null;
       }// end hadNext
-   }// end IteratorForLinkedDeque
 
-   /**
-    * ***************BONUS***************
-    * The Revers Iterator, starts from the back and goes to the front.
-    */
-   private class rIteratorForLinkedDeque implements Iterator<T> {
-      private DLNode currentNode;
-
-      /**
-       * will create the iterator object that can iterate through a linkedlist
-       * This iterator will start from the back and iterate
-       * through the linked list to the front.
+      /** ***********BONUS******************
+       * iterate through the list from back to front
+       * @return object within the current(back) node
        */
-      public rIteratorForLinkedDeque() {
-         currentNode = backNode;
-      }// end constructor
+      public T previous(){
+         T result = null;
 
-      /**
-       * This will get the next node in the list and return its data
-       * @return - the node object
-       */
-      public T next() {
-         T result; //initiate the variable to hold the data (T)
-
-         if (hasNext()) {
+         result = currentNodeBack.getData(); // get the data to return to the current node
+         if (hasPrevious()) {
             //no need to throw exception, the method getData will do it for me :)
-            result = currentNode.getData(); // get the data to return to the current node
-            currentNode = currentNode.getNextNode(); // set new node to the next node in the list
-
-         }else {
-            return null;
-         }// end hasNext if
-
+            currentNode = currentNodeBack;
+            currentNodeBack = currentNodeBack.getNextNode(); // set new node to the next node in the list
+         }//end if
          return result;
-      }// end next
+
+      }//end previous()
 
       /**
-       * this will see if there is a next node data and return ture if a node is
-       * not null
-       * @return - boolean
+       * this will return if the current node it null and that calling previous will be possible.
+       * @return -boolean - true if there is a next number to get
        */
-      public boolean hasNext() {
-         return currentNode != null;
-      }// end hadNext
+      public boolean hasPrevious(){
+         return currentNodeBack != null;
+      }//end hasPrevious
+
+
    }// end IteratorForLinkedDeque
+
+
+
+
 
 
 
