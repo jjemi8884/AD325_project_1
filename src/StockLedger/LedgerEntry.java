@@ -107,12 +107,12 @@ public class LedgerEntry  {
      * O(2n) ---> O(n) there is an iterator (while) through the linkedDeques
      * then a (for each loop) that reads the map output from the results of the while loop
      * so worst case is O(2n) which is O(n)
-     * @override - toString in parent object
+     * //@override - toString in parent object
      * @return -string in format of  [stock price] ([number of stocks]), ...
      */
     public String toString(){
         String answer;
-        Iterator<StockPurchase> itr = ledgerDisk.getIterator();
+        Iterator<StockPurchase> itr = ledgerDisk.iterator();
         TreeMap<Double, Integer> stockMap= new TreeMap<>();
         while(itr.hasNext()){
 
