@@ -178,6 +178,24 @@ public class LinkedDeque<T> implements DequeInterface<T>{
    } //end getIterator
 
    /**
+    * ***************BONUS****************
+    * This is the call for the reverse iterator
+    */
+   public Iterator<T> iteratorR(){
+      return new rIteratorForLinkedDeque();
+   }//end iteratorR
+
+   /**
+    * ****************BONUS****************
+    * This is the call the reverse iterator that will go through the
+    * LinkedDeque from the back to the front
+    *
+    */
+   public Iterator<T> getIteratorR(){
+      return iteratorR();
+   }//end getIteratorR
+
+   /**
     * this class will create the iterator object for the Deque
     * it only travels from front of the deque to the back of the deque
     */
@@ -204,6 +222,51 @@ public class LinkedDeque<T> implements DequeInterface<T>{
             //no need to throw exception, the method getData will do it for me :)
             result = currentNode.getData(); // get the data to return to the current node
             currentNode = currentNode.getPreviousNode(); // set new node to the next node in the list
+
+         }else {
+            return null;
+         }// end hasNext if
+
+         return result;
+      }// end next
+
+      /**
+       * this will see if there is a next node data and return ture if a node is
+       * not null
+       * @return - boolean
+       */
+      public boolean hasNext() {
+         return currentNode != null;
+      }// end hadNext
+   }// end IteratorForLinkedDeque
+
+   /**
+    * ***************BONUS***************
+    * The Revers Iterator, starts from the back and goes to the front.
+    */
+   private class rIteratorForLinkedDeque implements Iterator<T> {
+      private DLNode currentNode;
+
+      /**
+       * will create the iterator object that can iterate through a linkedlist
+       * This iterator will start from the back and iterate
+       * through the linked list to the front.
+       */
+      public rIteratorForLinkedDeque() {
+         currentNode = backNode;
+      }// end constructor
+
+      /**
+       * This will get the next node in the list and return its data
+       * @return - the node object
+       */
+      public T next() {
+         T result; //initiate the variable to hold the data (T)
+
+         if (hasNext()) {
+            //no need to throw exception, the method getData will do it for me :)
+            result = currentNode.getData(); // get the data to return to the current node
+            currentNode = currentNode.getNextNode(); // set new node to the next node in the list
 
          }else {
             return null;
