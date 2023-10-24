@@ -29,6 +29,7 @@ public class Main {
         System.out.println(ledger);
         ledger.sell("MSFT", 2, 30.00);
         System.out.println(ledger);
+        System.out.println("---- Extra test conducted!---\n");
         //--- extra test that different things undo the //
         ledger.sell("TSLA", 49, 30.00); // remove TSLA to one share to test the "stock" instead of "stocks"
         System.out.println(ledger); //
